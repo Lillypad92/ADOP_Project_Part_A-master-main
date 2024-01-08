@@ -28,7 +28,7 @@ namespace Assignment_A1_01.Services
 
             forecast.City = wd.city.name;
 
-            forecast.Items = new List<ForecastItem>();
+            //forecast.Items = new List<ForecastItem>();
 
             forecast.Items = wd.list.Select(x => new ForecastItem()
             {
@@ -36,7 +36,7 @@ namespace Assignment_A1_01.Services
                 Temperature = x.main.temp,
                 WindSpeed = x.wind.speed,
                 Description = x.weather[0].description,
-                Icon = $"http://openweathermap.org/img/w/{x.weather.First().icon}.png"
+                Icon = $"https://openweathermap.org/img/w/{x.weather.First().icon}.png"
             }).ToList();
 
             //Hint: you will find 

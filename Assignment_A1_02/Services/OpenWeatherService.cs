@@ -16,7 +16,7 @@ namespace Assignment_A1_02.Services
         HttpClient httpClient = new HttpClient();
 
         // Your API Key
-        readonly string apiKey = ""; 
+        readonly string apiKey = "6cd8834c2f5e1aba8affbdf8bb70b384"; 
 
         //Event declaration
         public event EventHandler<string> WeatherForecastAvailable;
@@ -34,6 +34,8 @@ namespace Assignment_A1_02.Services
             
             //Event code here to fire the event
             //Your code
+
+            
             return forecast;
         }
         public async Task<Forecast> GetForecastAsync(double latitude, double longitude)
@@ -57,7 +59,16 @@ namespace Assignment_A1_02.Services
 
             //Convert WeatherApiData to Forecast using Linq.
             //Your code
-            var forecast = new Forecast(); //dummy to compile, replaced by your own code
+            var forecast = new Forecast();
+            forecast.City = wd.city.name;
+            forecast.Items = wd.list.Select(x => new ForecastItem()
+            {
+                DateTime = UnixTimeStampToDateTime(x.dt),
+                Temperature = x.main.temp,
+                WindSpeed = x.wind.speed,
+                Description = x.weather[0].description,
+                Icon = $"https://openweathermap.org/img/w/{x.weather.First().icon}.png"
+            }).ToList();
             return forecast;
         }
         private DateTime UnixTimeStampToDateTime(double unixTimeStamp)

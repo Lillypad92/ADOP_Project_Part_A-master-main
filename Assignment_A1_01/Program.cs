@@ -25,7 +25,7 @@ namespace Assignment_A1_01
                 Console.WriteLine(dateTimeOfYear.ToString("yyyy-MM-dd"));
                 foreach (var date in dates) 
                 {
-                    Console.WriteLine($"- {date.DateTime.ToString("H:mm")}: {date.Description}, temperatur {date.Temperature} Celsius, wind: {date.WindSpeed} m/s");
+                    Console.WriteLine($"- {date.DateTime.ToString("H:mm")}: {date.Description}, temperatur {date.Temperature} Celsius, vind: {date.WindSpeed} m/s");
                     
                 }
             }
