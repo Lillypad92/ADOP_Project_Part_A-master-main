@@ -31,11 +31,11 @@ namespace Assignment_A1_02.Services
             var uri = $"https://api.openweathermap.org/data/2.5/forecast?q={City}&units=metric&lang={language}&appid={apiKey}";
 
             Forecast forecast = await ReadWebApiAsync(uri);
-            
+
             //Event code here to fire the event
             //Your code
+            Console.WriteLine($"Event message from weather service: New weather forecast for {City} available.");
 
-            
             return forecast;
         }
         public async Task<Forecast> GetForecastAsync(double latitude, double longitude)
@@ -48,6 +48,7 @@ namespace Assignment_A1_02.Services
 
             //Event code here to fire the event
             //Your code
+            Console.WriteLine($"Event message from weather service: New weather forecast for ({latitude}, {longitude}) available");
             return forecast;
         }
         private async Task<Forecast> ReadWebApiAsync(string uri)

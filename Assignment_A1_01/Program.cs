@@ -7,8 +7,8 @@ namespace Assignment_A1_01
     {
         static async Task Main(string[] args)
         {
-            double latitude = 60.61667;
-            double longitude = 16.76667;
+            double latitude = 60.642200;
+            double longitude = 16.551070;
 
             Forecast forecast = await new OpenWeatherService().GetForecastAsync(latitude, longitude);
 
