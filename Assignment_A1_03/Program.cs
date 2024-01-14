@@ -1,14 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Net.Http;
-using System.Net.Http.Json; 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Text.Json;
-
-using Assignment_A1_03.Models;
+﻿using Assignment_A1_03.Models;
 using Assignment_A1_03.Services;
 
 namespace Assignment_A1_03
@@ -32,14 +22,13 @@ namespace Assignment_A1_03
 
                 //Create the two tasks and wait for completion
                 tasks[0] = service.GetForecastAsync(latitude, longitude);
-                tasks[1] = service.GetForecastAsync("Åshammar");
+                tasks[1] = service.GetForecastAsync("Orlando");
 
                 Task.WaitAll(tasks[0], tasks[1]);
 
                 tasks[2] = service.GetForecastAsync(latitude, longitude);
-                tasks[3] = service.GetForecastAsync("Åshammar");
+                tasks[3] = service.GetForecastAsync("Orlando");
 
-                //Wait and confirm we get an event showing cahced data avaialable
                 Task.WaitAll(tasks[2], tasks[3]);
             }
             catch (Exception ex)
@@ -48,7 +37,7 @@ namespace Assignment_A1_03
                 //How to handle an exception
                 //Your Code
                 Console.WriteLine("Weather service error:");
-                Console.WriteLine($"Exeption occurd: {ex.Message}");
+                Console.WriteLine($"Exception occourd: {ex.Message}");
             }
             foreach (var task in tasks)
             {
@@ -61,8 +50,8 @@ namespace Assignment_A1_03
                     var currentForecast = task.Result;
                     Console.WriteLine($"Weather forecast for {currentForecast.City}");
 
-                    var groupByOrlando = currentForecast.Items.GroupBy(x => x.DateTime.DayOfYear);
-                    foreach (var currentDateGroup in groupByOrlando)
+                    var groupBySandviken = currentForecast.Items.GroupBy(x => x.DateTime.DayOfYear);
+                    foreach (var currentDateGroup in groupBySandviken)
                     {
                         DateTime forecastDates = DateTime.Now.AddDays(currentDateGroup.Key - 1);
                         Console.WriteLine(forecastDates.ToString("yyyy-MM-dd"));
@@ -82,7 +71,7 @@ namespace Assignment_A1_03
         //Your Code
         private static void Service_WeatherForecastAvailable(object sender, string e)
         {
-            Console.WriteLine($"Events recieved {e}");
+            Console.WriteLine($"Event message from weather service:{e}");
         }
     }
 }

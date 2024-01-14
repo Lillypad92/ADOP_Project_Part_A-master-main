@@ -1,12 +1,4 @@
-﻿//#define UseNewsApiSample  // Remove or undefine to use your own code to read live data
-
-using System;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json; 
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
+﻿#define UseNewsApiSample  // Remove or undefine to use your own code to read live data
 
 using Assignment_A2_04.Models;
 using Assignment_A2_04.ModelsSampleData;
@@ -19,7 +11,10 @@ namespace Assignment_A2_04.Services
         HttpClient httpClient = new HttpClient();
 
         // Your API Key
-        readonly string apiKey = "";
+        readonly string apiKey = "1c2ed5ab06ce461d91e907f429d953aa";
+
+        //Event declaration
+        public event EventHandler<string> NewsAvailable;
 
         public NewsService()
         {
@@ -31,6 +26,15 @@ namespace Assignment_A2_04.Services
         public async Task<News> GetNewsAsync(NewsCategory category)
         {
 #if UseNewsApiSample      
+            
+            //Cache
+            var cache = new NewsCacheKey(category, DateTime.Now);
+            if (cache.CacheExist)
+            {
+                NewsAvailable.Invoke(this, $"Event message from news service: XML Cached news in category is available: {category}");
+                return News.Deserialize(cache.FileName);
+            }
+
             NewsApiData nd = await NewsApiSampleData.GetNewsApiSampleAsync(category.ToString());
 
 #else
@@ -45,8 +49,22 @@ namespace Assignment_A2_04.Services
             //Convert Json to Object
             NewsApiData nd = await response.Content.ReadFromJsonAsync<NewsApiData>();
 #endif
+            
+            var news = new News()
+            {
+                Category = category,
+                Articles = nd.Articles.Select(x => new NewsItem()
+                {
+                    DateTime = x.PublishedAt,
+                    Title = x.Title
+                }).ToList()
+            };
 
-            var news = new News(); //dummy to compile, replaced by your code
+            //SERIALIZE IF NOT CACHED
+            News.Serialize(news, cache.FileName);
+
+            NewsAvailable.Invoke(this, $"Event message from news service: News in category is available: {category}");
+
             return news;
         }
     }

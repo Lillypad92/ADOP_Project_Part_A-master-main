@@ -1,12 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Collections.Generic;
+﻿using System.Net.Http.Json;
 using System.Collections.Concurrent;
-using System.Threading.Tasks;
-using System.Text.Json;
 
 using Assignment_A1_03.Models;
 
@@ -36,7 +29,7 @@ namespace Assignment_A1_03.Services
             //Your code
             if (cachedCityForecasts.ContainsKey((City, DateTime.Now.ToString("yyyy-MM-dd HH:mm")))) 
             {
-                WeatherForecastAvailable?.Invoke(this, $"Cached {City}");
+                WeatherForecastAvailable?.Invoke(this, $" Cached weather forecast for {City} available.");
                 return cachedCityForecasts[(City, DateTime.Now.ToString("yyyy-MM-dd HH:mm"))];
             }
 
@@ -51,7 +44,7 @@ namespace Assignment_A1_03.Services
             //Your code
             cachedCityForecasts.AddOrUpdate(
                 (City, DateTime.Now.ToString("yyyy-MM-dd HH:mm")), forecast, (key, existingForecast) => existingForecast);
-            WeatherForecastAvailable.Invoke(this, $"New weather for {City} avaiable.");
+            WeatherForecastAvailable.Invoke(this, $" New weather forcast for {City} available.");
     
             return forecast;
         }
@@ -62,7 +55,7 @@ namespace Assignment_A1_03.Services
             //Your code
             if (cachedGeoForecasts.ContainsKey((latitude, longitude, DateTime.Now.ToString("yyyy-MM-dd HH:mm")))) 
             {
-                WeatherForecastAvailable?.Invoke(this, $"Cached {latitude} {longitude}");
+                WeatherForecastAvailable?.Invoke(this, $" Cached weather forecast for ({latitude}, {longitude}) available.");
                 return cachedGeoForecasts[(latitude, longitude, DateTime.Now.ToString("yyyy-MM-dd HH:mm"))];
             }
 
@@ -77,7 +70,7 @@ namespace Assignment_A1_03.Services
             //Your code
             cachedGeoForecasts.AddOrUpdate(
             (latitude, longitude, DateTime.Now.ToString("yyyy-MM-dd HH:mm")), forecast, (key, existingForecast) => existingForecast);
-            WeatherForecastAvailable.Invoke(this, $"New weather for {latitude} {longitude} avaiable.");
+            WeatherForecastAvailable.Invoke(this, $" New weather forcast for ({latitude}, {longitude}) available.");
 
             return forecast;
         }

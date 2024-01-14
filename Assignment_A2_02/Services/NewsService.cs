@@ -1,4 +1,4 @@
-﻿//#define UseNewsApiSample  // Remove or undefine to use your own code to read live data
+﻿#define UseNewsApiSample  // Remove or undefine to use your own code to read live data
 
 using System;
 using System.Linq;
@@ -13,10 +13,13 @@ namespace Assignment_A2_02.Services
 {
     public class NewsService
     {
+        //Event declaration
+        public event EventHandler<string> NewsAvailable;
+
         HttpClient httpClient = new HttpClient();
 
         // Your API Key
-        readonly string apiKey = "";
+        readonly string apiKey = "1c2ed5ab06ce461d91e907f429d953aa";
 
         public NewsService()
         {
@@ -42,8 +45,22 @@ namespace Assignment_A2_02.Services
             //Convert Json to Object
             NewsApiData nd = await response.Content.ReadFromJsonAsync<NewsApiData>();
 #endif
-            
-            var news = new News(); //dummy to compile, replaced by your code
+
+            var news = new News
+            {
+                Category = category,
+                Articles = nd.Articles.Select(x => new NewsItem()
+                {
+                    DateTime = x.PublishedAt,
+                    Title = x.Title,
+                    Description = x.Description,
+                    Url = x.Url,
+                    UrlToImage = x.UrlToImage
+                }).ToList()
+            };
+
+            NewsAvailable.Invoke(this, $"Event message from news service: News in category is available: {category}");
+
             return news;
         }
     }

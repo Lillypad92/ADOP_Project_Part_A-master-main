@@ -28,8 +28,6 @@ namespace Assignment_A1_01.Services
 
             forecast.City = wd.city.name;
 
-            //forecast.Items = new List<ForecastItem>();
-
             forecast.Items = wd.list.Select(x => new ForecastItem()
             {
                 DateTime = UnixTimeStampToDateTime(x.dt),

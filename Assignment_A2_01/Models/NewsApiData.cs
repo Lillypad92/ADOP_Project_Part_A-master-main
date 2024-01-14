@@ -26,5 +26,7 @@ namespace Assignment_A2_01.Models
         public string Status { get; set; }
         public int TotalResults { get; set; }
         public List<Article> Articles { get; set; }
+
+        
     }
 }

@@ -1,10 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Assignment_A2_04.Models
 {
+
     public enum NewsCategory
     {
         business, entertainment, general, health, science, sports, technology
@@ -22,7 +20,7 @@ namespace Assignment_A2_04.Models
         public NewsCacheKey (NewsCategory category, DateTime dt)
         {
             this.category = category;
-            timewindow = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+            timewindow = dt.ToString("yyyy-MM-dd-HH-mm");
         }
         static string fname(string name)
         {
@@ -59,6 +57,8 @@ namespace Assignment_A2_04.Models
 
                 using (Stream s = File.OpenRead(fname))
                     news = (News)xs.Deserialize(s);
+
+                
 
                 return news;
             }
